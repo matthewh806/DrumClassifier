@@ -24,15 +24,14 @@ class SoundDataset(Dataset):
     This performs transformations on the audio data to ensure its in the format we expect
     in terms of number of channels & size
     '''
-    def __get__item(self, idx):
+    def __getitem__(self, idx):
         audio_data = self.audio_datas[idx]
         audio_path = audio_data[0]
-        class_id = audio_path[1]
+        class_id = audio_data[1]
 
         signal, sr = AudioUtils.open(audio_path)
         signal = AudioUtils.convert_mono(signal)
-        signal = AudioUtils.resize(self.len_samples)
+        signal = AudioUtils.resize(signal, self.len_samples)
 
         mel_spectrogram = AudioUtils.get_mel_spectrogram(signal, self.sample_rate, hop_length=128, n_mels=64)
-
         return mel_spectrogram, class_id
