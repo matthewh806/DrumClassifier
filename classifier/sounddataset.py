@@ -23,6 +23,11 @@ class SoundDataset(Dataset):
 
     This performs transformations on the audio data to ensure its in the format we expect
     in terms of number of channels & size
+
+    NOTE: Currently returning a tuple (mel_specgtrogram, class_id, audio_data) where
+          audio data is the path. This should be removed once I've figured out 
+          
+          How to pass in a single audio file to a trained model
     '''
     def __getitem__(self, idx):
         audio_data = self.audio_datas[idx]
@@ -34,4 +39,4 @@ class SoundDataset(Dataset):
         signal = AudioUtils.resize(signal, self.len_samples)
 
         mel_spectrogram = AudioUtils.get_mel_spectrogram(signal, self.sample_rate, hop_length=128, n_mels=64)
-        return mel_spectrogram, class_id
+        return mel_spectrogram, class_id, audio_path
